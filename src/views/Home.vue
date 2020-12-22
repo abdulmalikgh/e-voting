@@ -5,10 +5,10 @@
         <a class="navbar-brand" href="#">
             <img src="../assets/rsz_e-voting_1.png" height="25" alt="">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        </button> -->
+        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active search" aria-current="page" href="#">
@@ -21,7 +21,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        <!-- </div> -->
       </div>
     </nav>
     <!-- Hero -->
@@ -44,11 +44,14 @@
         <div class="main-container">
           <div class="side-navigation">
              <ul>
-               <li><a href="">Presidential</a></li>
-               <li><a href="">Vice President</a></li>
-               <li><a href="">General Secretary</a></li>
-               <li><a href="">Financial Secretary</a></li>
+               <li><a class=" btn btn-secondary py-3" href="/vote/presidential">Presidential</a></li>
+               <li><a class=" btn btn-secondary py-3" href="/vote/vice_president">Vice President</a></li>
+               <li><a class=" btn btn-secondary py-3" href="/vote/general_secretary">General Secretary</a></li>
+               <li><a class=" btn btn-secondary py-3" href="/vote/financial_secretary">Financial Secretary</a></li>
              </ul>
+          </div>
+          <div class="vote-content">
+              <router-view />
           </div>
         </div>
     </div>
@@ -148,22 +151,25 @@ export default {
   .main-container{
     margin: 50px auto;
     width:80%;
+    display: flex;
   }
-
+  .vote-content{
+    width:70%
+  }
+  .side-navigation ul {
+    width:30%;
+  }
   /* side navigation  */
   .side-navigation ul {
     list-style: none;
   }
-  .side-navigation ul li {
+  .side-navigation ul li  .btn{
     width:200px ;
     margin:10px 0;
-    padding:10px 20px;
     background-color: rgb(129, 123, 123);
-    border-radius: 10px ;
-    cursor: pointer;
   }
-  .side-navigation ul li a{
+  /* .side-navigation ul li a{
     color:#fff;
     text-decoration: none;
-  }
+  } */
 </style>

@@ -8,7 +8,33 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path:'/vote/presidential',
+        name:'presidential',
+        title:'e_vote | presidential',
+        component: () => import(/* webpackChunkName: "about" */ '../components/Presidential.vue')
+      },
+      {
+        path:'/vote/vice_president',
+        name:'vice_president',
+        title:'e_vote | vice_president',
+        component: () => import(/* webpackChunkName: "about" */ '../components/VicePresident.vue')
+      },
+      {
+        path:'/vote/general_secretary',
+        name:'General_secretary',
+        title:'e_vote | general_secretary',
+        component: () => import(/* webpackChunkName: "about" */ '../components/GeneralSecretary.vue')
+      },
+      {
+        path:'/vote/financial_secretary',
+        name:'financial_secretary',
+        title:'e_vote | financial_secretary',
+        component: () => import(/* webpackChunkName: "about" */ '../components/FinancialSecretary.vue')
+      },
+    ]
   },
   // {
   //   path: '/about',
@@ -39,4 +65,11 @@ router.afterEach((to, from) => {
   NProgress.done()
 })
 
+// redirect
+// router.beforeEach((to, from) => {
+//   if(to.home === 'home') {
+//     next('/vote/presidential')
+//   }
+//   next()
+// })
 export default router
