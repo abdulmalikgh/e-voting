@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="../assets/logo.png" height="15" alt="">
+            <img src="../assets/rsz_e-voting_1.png" height="25" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -17,13 +17,17 @@
             </li>
             <li class="nav-item">
               <a class="nav-link login" href="#">
-                <i class="fas fa-user ml-2"></i>  Login
+                <i class="fas fa-user ml-2 mr-2"></i>  Login
               </a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+    <!-- Hero -->
+    <div class="hero-container">
+
+    </div>
   </div>
 </template>
 
@@ -37,10 +41,10 @@ export default {
 
 <style scoped>
   .navbar{
-    background-color: #fff !important;
+    background-color: rgb(253, 250, 250) !important;
   }
   .login{
-    background-color:aliceblue;
+    background-color:#eee;
     border: 1px solid #4DABF7;  
     width:130px;
     border-radius: 50px;
@@ -57,5 +61,13 @@ export default {
   }
   .nav-link{
     margin: 10px 0;
+  }
+  .hero-container{
+    background-image: url('../assets/rsz_e-voting.png') ;
+    height: 300px;
+    background-repeat: no-repeat;
+    width:100%;
+    background-position: center;
+    background-size: cover;
   }
 </style>
