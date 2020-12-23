@@ -9,6 +9,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    redirect:'/vote/presidential',
     children: [
       {
         path:'/vote/presidential',
