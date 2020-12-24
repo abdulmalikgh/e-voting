@@ -35,7 +35,14 @@ const routes = [
         title:'e_vote | financial_secretary',
         component: () => import(/* webpackChunkName: "about" */ '../components/FinancialSecretary.vue')
       },
-    ]
+    ],
+   
+  },
+  {
+    path:'/results',
+    name:'results',
+    title:'e_vote | results',
+    component: () => import(/* webpackChunkName: "about" */ '../components/PresidentialResults.vue')
   },
   // {
   //   path: '/about',

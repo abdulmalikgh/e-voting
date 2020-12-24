@@ -35,7 +35,7 @@
                 <a @click="setActivePage('election')" :class="[activePage == 'election' ? 'link-border' : '']" href=""> Election</a>
               </li>
               <li>
-                <a @click="setActivePage('results')" :class="[activePage == 'results' ? 'link-border' : '']" href="">Results</a>
+                <a @click="setActivePage('results')" :class="[activePage == 'results' ? 'link-border' : '']" href="/results">Results</a>
               </li>
             </ul>
         
@@ -235,7 +235,179 @@ export default {
     
   },
   updated() {
-this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+    this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+  },
+  created() {
+
+    // populate financial secretaries
+     const finanace = [
+         {
+          name:'Adjoa Frimpong',
+          title:'Adjoa the leader',
+          team: 'Blue team',
+          image:require('../assets/rsz_imageone.jpg'),
+          color:'blue',
+          vote_name:'adjoa',
+          votes:0
+        },
+         {
+          name:'Kofi Mensah',
+          title:'Adjoa the leader',
+          team: 'Royal team',
+          image:require('../assets/rsz_imagetwo.jpg'),
+          color:'#581845 ',
+          vote_name:'kofi',
+          votes:0
+        },
+         {
+          name:'Abdul-Malik Musah',
+          title:'Adjoa the leader',
+          team: 'Margenta team',
+          image:require('../assets/rsz_imagefour.jpg'),
+          color:'#C70039 ',
+          vote_name:'malik',
+          votes:0
+        },
+         {
+          name:'Owusu Bismark',
+          title:'Adjoa the leader',
+          team: 'Gold team',
+          image:require('../assets/imageFour.jpeg'),
+          color:'gold',
+          vote_name:'owusu',
+          votes:0
+          }
+      ]  
+      if(!localStorage.getItem('financial_secretaries')) {
+          localStorage.setItem('financial_secretaries', JSON.stringify(finanace))
+      }
+      // populate presidents
+        const presidential = [
+         {
+          name:'Adjoa Frimpong',
+          title:'Adjoa the leader',
+          team: 'Blue team',
+          image:require('../assets/rsz_imageone.jpg'),
+          color:'blue',
+          vote_name:'adjoa',
+          votes:0
+        },
+         {
+          name:'Kofi Mensah',
+          title:'Adjoa the leader',
+          team: 'Royal team',
+          image:require('../assets/rsz_imagetwo.jpg'),
+          color:'#581845 ',
+          vote_name:'kofi',
+          votes:0
+        },
+         {
+          name:'Abdul-Malik Musah',
+          title:'Adjoa the leader',
+          team: 'Margenta team',
+          image:require('../assets/rsz_imagefour.jpg'),
+          color:'#C70039 ',
+          vote_name:'malik',
+          votes:0
+        },
+         {
+          name:'Owusu Bismark',
+          title:'Adjoa the leader',
+          team: 'Gold team',
+          image:require('../assets/imageFour.jpeg'),
+          color:'gold',
+          vote_name:'owusu',
+          votes:0
+          }
+      ]  
+      if(!localStorage.getItem('presidents')) {
+          localStorage.setItem('presidents', JSON.stringify(presidential))
+      }
+      //  populate vice presidents
+       const vice = [
+         {
+          name:'Adjoa Frimpong',
+          title:'Adjoa the leader',
+          team: 'Blue team',
+          image:require('../assets/rsz_imageone.jpg'),
+          color:'blue',
+          vote_name:'adjoa',
+          votes:0
+        },
+         {
+          name:'Kofi Mensah',
+          title:'Adjoa the leader',
+          team: 'Royal team',
+          image:require('../assets/rsz_imagetwo.jpg'),
+          color:'#581845 ',
+          vote_name:'kofi',
+          votes:0
+        },
+         {
+          name:'Abdul-Malik Musah',
+          title:'Adjoa the leader',
+          team: 'Margenta team',
+          image:require('../assets/rsz_imagefour.jpg'),
+          color:'#C70039 ',
+          vote_name:'malik',
+          votes:0
+        },
+         {
+          name:'Owusu Bismark',
+          title:'Adjoa the leader',
+          team: 'Gold team',
+          image:require('../assets/imageFour.jpeg'),
+          color:'gold',
+          vote_name:'owusu',
+          votes:0
+          }
+      ]  
+      if(!localStorage.getItem('vice_presidents')) {
+          localStorage.setItem('vice_presidents', JSON.stringify(vice))
+      }
+      // Populate general secretaries
+         const data = [
+         {
+          name:'Adjoa Frimpong',
+          title:'Adjoa the leader',
+          team: 'Blue team',
+          image:require('../assets/rsz_imageone.jpg'),
+          color:'blue',
+          vote_name:'adjoa',
+          votes:0
+        },
+         {
+          name:'Kofi Mensah',
+          title:'Adjoa the leader',
+          team: 'Royal team',
+          image:require('../assets/rsz_imagetwo.jpg'),
+          color:'#581845 ',
+          vote_name:'kofi',
+          votes:0
+        },
+         {
+          name:'Abdul-Malik Musah',
+          title:'Adjoa the leader',
+          team: 'Margenta team',
+          image:require('../assets/rsz_imagefour.jpg'),
+          color:'#C70039 ',
+          vote_name:'malik',
+          votes:0
+        },
+         {
+          name:'Owusu Bismark',
+          title:'Adjoa the leader',
+          team: 'Gold team',
+          image:require('../assets/imageFour.jpeg'),
+          color:'gold',
+          vote_name:'owusu',
+          votes:0
+          }
+      ]  
+      if(!localStorage.getItem('general_secretaries')) {
+          localStorage.setItem('general_secretaries', JSON.stringify(data))
+      }
+
   },
   mounted() {
     this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
@@ -244,7 +416,6 @@ this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('c
       // Start Firebase invisible reCAPTCHA verifier
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('get-sign-in-code')
       recaptchaVerifier.render()
-  
   }
 }
 </script>

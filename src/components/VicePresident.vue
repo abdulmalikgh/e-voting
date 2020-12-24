@@ -197,47 +197,7 @@ export default {
             }
             );
 
-        const data = [
-         {
-          name:'Adjoa Frimpong',
-          title:'Adjoa the leader',
-          team: 'Blue team',
-          image:require('../assets/rsz_imageone.jpg'),
-          color:'blue',
-          vote_name:'adjoa',
-          votes:0
-        },
-         {
-          name:'Kofi Mensah',
-          title:'Adjoa the leader',
-          team: 'Royal team',
-          image:require('../assets/rsz_imagetwo.jpg'),
-          color:'#581845 ',
-          vote_name:'kofi',
-          votes:0
-        },
-         {
-          name:'Abdul-Malik Musah',
-          title:'Adjoa the leader',
-          team: 'Margenta team',
-          image:require('../assets/rsz_imagefour.jpg'),
-          color:'#C70039 ',
-          vote_name:'malik',
-          votes:0
-        },
-         {
-          name:'Owusu Bismark',
-          title:'Adjoa the leader',
-          team: 'Gold team',
-          image:require('../assets/imageFour.jpeg'),
-          color:'gold',
-          vote_name:'owusu',
-          votes:0
-          }
-      ]  
-      if(!localStorage.getItem('vice_presidents')) {
-          localStorage.setItem('vice_presidents', JSON.stringify(data))
-      }
+       
 
     }
 }
