@@ -58,7 +58,7 @@
                         <p>Votes {{user.votes}}</p>
                         <!-- <p>{{`Votes ${user.votes}`}}</p>
                         <p>{{`total ${voters.length}`}}</p> -->
-                         <p>Percentage {{ percentage(user.votes, voters.length) }} {{'%'}} </p> 
+                         <p v-if="voters.length > 0">Percentage {{ percentage(user.votes, voters.length) }} {{'%'}} </p> 
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                         <p>Votes {{user.votes}}</p>
                         <!-- <p>total votes {{vice_presidential_voters}}</p> -->
                      
-                              <p >Percentage {{percentage(user.votes, vice_presidential_voters.length)}} {{'%'}} </p>
+                              <p v-if="vice_presidential_voters.length > 0">Percentage {{percentage(user.votes, vice_presidential_voters.length)}} {{'%'}} </p>
                           
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="card-footer text-light" :style="`background-color:${user.color}`">
                         <p>Votes {{user.votes}}</p>
-                        <p>Percentage {{percentage(user.votes, general_secretaries_voters.length)}} {{'%'}} </p>
+                        <p v-if="general_secretaries_voters.length > 0">Percentage {{percentage(user.votes, general_secretaries_voters.length)}} {{'%'}} </p>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                         <div class="card-footer text-light" :style="`background-color:${user.color}`">
                         <p>Votes {{user.votes}}</p>
                         <!-- <p>{{typeof financial_secretaries_voters}}</p> -->
-                        <p>Percentage {{percentage(user.votes,financial_secretaries_voters.length)}} {{'%'}} </p>
+                        <p v-if="financial_secretaries_voters.length > 0">Percentage {{percentage(user.votes,financial_secretaries_voters.length)}} {{'%'}} </p>
                         </div>
                     </div>
                 </div>
