@@ -47,7 +47,7 @@
           <div class="col-12">
               <h2 class="text-center py-5">Presidential results</h2>
           </div>
-          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3 " v-for="(user, key) in users" :key="key" @mouseover="getSelectedCandidate(user, key)">  
+          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3 " v-for="(user, key) in users" :key="key">  
                 <div class="card my-3">
                     <div class="card top-card" >
                         <img class="" height="220" :src="user.image" alt="Card image cap">
@@ -56,7 +56,9 @@
                         </div>
                         <div class="card-footer text-light" :style="`background-color:${user.color}`">
                         <p>Votes {{user.votes}}</p>
-                    <p>Percentage {{(user.votes / voters.length * 100).toFixed(2)}} {{'%'}} </p>
+                        <!-- <p>{{`Votes ${user.votes}`}}</p>
+                        <p>{{`total ${voters.length}`}}</p> -->
+                         <p>Percentage {{ percentage(user.votes, voters.length) }} {{'%'}} </p> 
                         </div>
                     </div>
                 </div>
@@ -66,19 +68,19 @@
           <div class="col-12">
               <h2 class="text-center py-5">Vice Presidential results</h2>
           </div>
-          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3" v-for="(user, key) in vice_presidents" :key="key" @mouseover="getSelectedCandidate(user, key)">  
+          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3" v-for="(user, key) in vice_presidents" :key="key">  
                 <div class="card my-3">
                     <div class="card top-card" >
-                        <div class="setOverlay">
-                            <a class="btn btn-outline-light px-5 py-2" href="#selected">Select</a>
-                        </div>
                         <img class="" height="220" :src="user.image" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{user.name}}</h5>
                         </div>
                         <div class="card-footer text-light" :style="`background-color:${user.color}`">
                         <p>Votes {{user.votes}}</p>
-                        <p>Percentage {{(user.votes / vice_presidential_voters.length * 100).toFixed(2)}} {{'%'}} </p>
+                        <!-- <p>total votes {{vice_presidential_voters}}</p> -->
+                     
+                              <p >Percentage {{percentage(user.votes, vice_presidential_voters.length)}} {{'%'}} </p>
+                          
                         </div>
                     </div>
                 </div>
@@ -89,7 +91,7 @@
           <div class="col-12">
               <h2 class="text-center py-5">General Secretarial Results</h2>
           </div>
-          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3" v-for="(user, key) in general_secretaries" :key="key" @mouseover="getSelectedCandidate(user, key)">  
+          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3" v-for="(user, key) in general_secretaries" :key="key">  
                 <div class="card my-3">
                     <div class="card top-card" >
                         <div class="setOverlay">
@@ -101,7 +103,7 @@
                         </div>
                         <div class="card-footer text-light" :style="`background-color:${user.color}`">
                         <p>Votes {{user.votes}}</p>
-                    <p>Percentage {{(user.votes / general_secretaries_voters.length * 100).toFixed(2)}} {{'%'}} </p>
+                        <p>Percentage {{percentage(user.votes, general_secretaries_voters.length)}} {{'%'}} </p>
                         </div>
                     </div>
                 </div>
@@ -112,19 +114,17 @@
           <div class="col-12">
               <h2 class="text-center py-5">Financial Secretarial results</h2>
           </div>
-          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3" v-for="(user, key) in financial_secretaries" :key="key" @mouseover="getSelectedCandidate(user, key)">  
+          <div class="col-sm-6 col-xs-10 col-md-5 col-lg-3" v-for="(user, key) in financial_secretaries" :key="key">  
                 <div class="card my-3">
                     <div class="card top-card" >
-                        <div class="setOverlay">
-                            <a class="btn btn-outline-light px-5 py-2" href="#selected">Select</a>
-                        </div>
                         <img class="" height="220" :src="user.image" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">{{user.name}}</h5>
                         </div>
                         <div class="card-footer text-light" :style="`background-color:${user.color}`">
                         <p>Votes {{user.votes}}</p>
-                    <p>Percentage {{(user.votes / financial_secretaries_voters.length * 100).toFixed(2)}} {{'%'}} </p>
+                        <!-- <p>{{typeof financial_secretaries_voters}}</p> -->
+                        <p>Percentage {{percentage(user.votes,financial_secretaries_voters.length)}} {{'%'}} </p>
                         </div>
                     </div>
                 </div>
@@ -217,14 +217,20 @@ export default {
         }
     },
     methods: {
-            goBack() {
-                this.$router.go(-1)
-                localStorage.setItem('activePage', 'election')
-            },
-           setActivePage(page) {
-            localStorage.setItem('activePage', page)
-          },
-             logout(){
+      percentage(vote, totalVotes) {
+        // return Math.round((vote / totalVotes) * 100
+        const division = vote / totalVotes
+        const result = division * 100
+        return result
+      },
+      goBack() {
+          this.$router.go(-1)
+          localStorage.setItem('activePage', 'election')
+      },
+      setActivePage(page) {
+      localStorage.setItem('activePage', page)
+    },
+    logout(){
       localStorage.clear()
       window.location.reload()
     },
@@ -271,6 +277,7 @@ export default {
     }
     
     },
+
     updated() {
         this.activePage = localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'results'
     },
@@ -282,10 +289,10 @@ export default {
         this.general_secretaries = JSON.parse(localStorage.getItem('general_secretaries')).sort(function(a, b){return b.votes - a.votes}) ;
         this.financial_secretaries = JSON.parse(localStorage.getItem('financial_secretaries')).sort(function(a, b){return b.votes - a.votes}) 
         
-        this.voters = localStorage.getItem('voters') ? localStorage.getItem('voters')  : []
-        this.vice_presidential_voters = localStorage.getItem('vice_president_voters') ? localStorage.getItem('vice_president_voters') : []
-        this.general_secretaries_voters = localStorage.getItem('general_secretaries_voters') ? localStorage.getItem('general_secretaries_voters') : []
-        this.financial_secretaries_voters = localStorage.getItem('financial_secretary_voters') ? localStorage.getItem('financial_secretary_voters') : []
+        this.voters = localStorage.getItem('voters') ? JSON.parse( localStorage.getItem('voters')) : []
+        this.vice_presidential_voters = localStorage.getItem('vice_president_voters') ? JSON.parse(localStorage.getItem('vice_president_voters')) : []
+        this.general_secretaries_voters = localStorage.getItem('general_secretaries_voters') ? JSON.parse(localStorage.getItem('general_secretaries_voters')) : []
+        this.financial_secretaries_voters = localStorage.getItem('financial_secretaries_voters') ? JSON.parse(localStorage.getItem('financial_secretaries_voters')) : []
     },
     mounted() {
            // Start Firebase invisible reCAPTCHA verifier

@@ -126,6 +126,12 @@ export default {
 
             if(!localStorage.getItem('financial_secretaries_voters')) {
                 localStorage.setItem('financial_secretaries_voters',JSON.stringify([user]))
+                for(let i = 0; i <= presidents.length; i++) {
+                    if(i === this.key) {
+                        presidents[i].votes += 1
+                    }
+                }
+                localStorage.setItem('financial_secretaries',JSON.stringify(presidents))
                 setTimeout(function(){
                     self.isLoading = false
                     self.showCandidate = false
@@ -136,18 +142,18 @@ export default {
             } else {
                 const oldVoters = JSON.parse(localStorage.getItem('financial_secretaries_voters'))
                 const newArray = [user]
-                if(oldVoters && oldVoters.length === 1) {
-                    if(oldVoters[0] == user) {
-                        alert(`You can't vote more than one`)
-                        self.isLoading = false;
-                        return
-                    }
-                }
-                if(!oldVoters.find(number => number == user)) {
-                    alert(`You can't vote more than one`)
-                    this.isLoading = false
-                    return
-                }
+                // if(oldVoters && oldVoters.length === 1) {
+                //     if(oldVoters[0] == user) {
+                //         alert(`You can't vote more than one`)
+                //         self.isLoading = false;
+                //         return
+                //     }
+                // }
+                // if(!oldVoters.find(number => number == user)) {
+                //     alert(`You can't vote more than one`)
+                //     this.isLoading = false
+                //     return
+                // }
                 const newVoters = [...oldVoters,...newArray]
                 localStorage.setItem('financial_secretaries_voters', JSON.stringify(newVoters))
               

@@ -213,7 +213,10 @@ export default {
       this.currentPage = localStorage.getItem('currentPage')
     },
     logout(){
-      localStorage.clear()
+      localStorage.removeItem('loginUser')
+      localStorage.removeItem('phone_number')
+      localStorage.removeItem('isLoggedIn')
+
       window.location.reload()
     },
     getLoginUser() {

@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { parse } from 'querystring'
 import toasterMixin from '../mixins/toastermixin'
 
 const $ = require('jquery')
@@ -112,20 +113,19 @@ export default {
         submitVote(data) {
             const self = this
             this.isLoading = true
-            const user = localStorage.getItem('loginUser')
+            const user = Number(localStorage.getItem('loginUser'))
             const vote = data.vote_name
             const presidents = JSON.parse(localStorage.getItem('presidents'))
-            
+
             // keeping track of voters
-            if(!user) {
-                 this.isLoading = false
+             if(!user) {
+                this.isLoading = false
                 alert('Please create account or login before you can vote')
                 return
             }
 
             if(!localStorage.getItem('voters')) {
                 localStorage.setItem('voters',JSON.stringify([user]))
-                // ADDING NEW DATA TO DATABASE
                 for(let i = 0; i <= presidents.length; i++) {
                     if(i === this.key) {
                         presidents[i].votes += 1

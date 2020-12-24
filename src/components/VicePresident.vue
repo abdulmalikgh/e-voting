@@ -125,7 +125,16 @@ export default {
             // keeping track of voters
 
             if(!localStorage.getItem('vice_president_voters')) {
+
                 localStorage.setItem('vice_president_voters',JSON.stringify([user]))
+
+                for(let i = 0; i <= presidents.length; i++) {
+                    if(i === this.key) {
+                        presidents[i].votes += 1
+                    }
+                }
+                localStorage.setItem('vice_presidents',JSON.stringify(presidents))
+                
                 setTimeout(function(){
                       self.isLoading = false
                       self.showCandidate = false

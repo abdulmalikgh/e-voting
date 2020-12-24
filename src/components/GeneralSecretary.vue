@@ -126,6 +126,12 @@ export default {
 
             if(!localStorage.getItem('general_secretaries_voters')) {
                 localStorage.setItem('general_secretaries_voters',JSON.stringify([user]))
+                for(let i = 0; i <= presidents.length; i++) {
+                    if(i === this.key) {
+                        presidents[i].votes += 1
+                    }
+                }
+                localStorage.setItem('general_secretaries',JSON.stringify(presidents))
                 setTimeout(function(){
                     self.isLoading = false
                     self.showCandidate = false
