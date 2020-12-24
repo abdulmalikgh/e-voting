@@ -2,7 +2,7 @@
   <div id="page-wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <img src="../assets/rsz_e-voting_1.png" height="25" alt="">
         </a>
         <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,6 @@
     <div class="content-wrapper">
         <div class="main-container">
           <div class="side-navigation">
-             <button @click="toggler" class="float-right my-2 mr-2 toggler">X</button>
              <ul>
                <li><a  @click="setCurrentPage('presidential')" :class="[currentPage == 'presidential' ? 'green' : '']" class=" btn btn-secondary py-2 " href="/vote/presidential">Presidential</a></li>
                <li><a  @click="setCurrentPage('vice_president')" :class="[currentPage == 'vice_president' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/vice_president">Vice President</a></li>
@@ -54,14 +53,39 @@
              </ul>
           </div>
           <div class="vote-content">
-             <button @click="toggler" class="btn btn-primary toggler" >
+             <button class="btn btn-primary toggler" data-target="#exampleModalCenter" data-toggle="modal" >
                <i class="fas fa-bars"></i>
              </button>
               <router-view />
           </div>
         </div>
     </div>
-
+    <!-- nav container -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Menu</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class=" modal-navigation">
+             <ul class="">
+               <li><a  @click="setCurrentPage('presidential')" :class="[currentPage == 'presidential' ? 'green' : '']" class=" btn btn-secondary py-2 " href="/vote/presidential">Presidential</a></li>
+               <li><a  @click="setCurrentPage('vice_president')" :class="[currentPage == 'vice_president' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/vice_president">Vice President</a></li>
+               <li><a  @click="setCurrentPage('general_secretary')" :class="[currentPage == 'general_secretary' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/general_secretary">General Secretary</a></li>
+               <li><a  @click="setCurrentPage('financial_secretary')" :class="[currentPage == 'financial_secretary' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/financial_secretary">Financial Secretary</a></li>
+             </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- modal container -->
     <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -136,6 +160,7 @@ export default {
       showNumberInput:true,
       showCodeInput:false,
       currentPage: null,
+      activePage:null,
       isLoggedIn: localStorage.getItem('isLoggedIn'),
       code:'',
       error:'',
@@ -169,9 +194,9 @@ export default {
     }
   },
   computed:{
-    activePage() {
-      return localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'election'
-    },
+    // activePage() {
+    //   return localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'election'
+    // },
   //  currentPage(){
   //     return localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
   //   }
@@ -411,6 +436,7 @@ export default {
   },
   mounted() {
     this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+    this.activePage =  'election'
     window.scrollTo(0, 0);
      const self = this;
       // Start Firebase invisible reCAPTCHA verifier
@@ -504,13 +530,18 @@ export default {
     width:30%;
   }
   /* side navigation  */
-  .side-navigation ul {
+  .side-navigation ul, .modal-navigation ul {
     list-style: none;
   }
-  .side-navigation ul li  .btn{
+  .side-navigation ul li .btn {
     width:200px ;
     margin:10px 0;
     background-color: rgb(129, 123, 123);
+  }
+  .modal-navigation ul li .btn{
+     background-color: rgb(129, 123, 123);
+     width:200px ;
+    margin:10px 0;
   }
   .display {
     position:absolute;
@@ -557,9 +588,9 @@ export default {
   }
 }
 @media screen and (max-width:676px) {
- /* .side-navigation, .side-navigation ul{
+ .side-navigation, .side-navigation ul{
  display: none;
- } */
+ }
  .toggler{
    visibility: visible;
  }

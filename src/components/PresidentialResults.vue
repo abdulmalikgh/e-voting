@@ -2,7 +2,7 @@
   <div class="" id="page_wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" @click="goBack" href="#">
             <img src="../assets/rsz_e-voting_1.png" height="25" alt="">
         </a>
         <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,7 @@
          <div class=" top-nav-wrapper">
             <ul class="top-navigation">
               <li>
-                <a @click="setActivePage('election')" :class="[activePage == 'election' ? 'link-border' : '']" href=""> Election</a>
+                <a @click="goBack" :class="[activePage == 'election' ? 'link-border' : '']" href="#">  Elections</a>
               </li>
               <li>
                 <a @click="setActivePage('results')" :class="[activePage == 'results' ? 'link-border' : '']" href="/results">Results</a>
@@ -130,10 +130,69 @@
                 </div>
             </div>
       </div>
+
+         <!-- modal container -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Sign In</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="" @submit.prevent="verifyCode" v-if="showNumberInput">
+              <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                      <label for="number">
+                        Enter Phone Number
+                      </label>
+                      <input type="tel" v-model="phone_number" id="number" class="form-control" required>
+                    </div>
+                     <div id="get-sign-in-code"></div>
+                     <div v-if="error">
+                        <p class="alert-danger py-3 pl-3">{{error}}</p>
+                      </div>
+                      <div class="modal-footer">
+                      <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                      <button  type="submit" class="btn btn-primary" > 
+                         <span v-if="isLoading" class="spinner-border spinner-border-sm"></span> Get Sign In Code</button>
+                    </div>
+                </div>
+              </div>
+            </form>
+
+            <!-- code input -->
+            <form action="" v-if="showCodeInput" @submit.prevent="login">
+              <div class="row" >
+                <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="code">Enter Verification Code</label>
+                      <input id="code" type="text" class="form-control" v-model="code" required>
+                    </div>
+                </div>
+                 <div v-if="error">
+                        <p class="alert-danger py-3 pl-3">{{error}}</p>
+                      </div>
+              </div>  
+
+               <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary"> <span v-if="isLoading" class="spinner-border spinner-border-sm"></span> Sign In</button>
+                </div>
+            </form>
+
+            <!-- error -->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase/app'
 export default {
     data() {
         return {
@@ -144,10 +203,80 @@ export default {
             general_secretaries:[],
             general_secretaries_voters: [],
             financial_secretaries: [],
-            financial_secretaries_voters:[]
+            financial_secretaries_voters:[],
+            activePage:null,
+            // 
+            phone_number:'',
+            isLoading:false,
+            showNumberInput:true,
+            showCodeInput:false,
+            isLoggedIn: localStorage.getItem('isLoggedIn'),
+            code:'',
+            error:'',
+            success:'',
         }
     },
+    methods: {
+            goBack() {
+                this.$router.go(-1)
+                localStorage.setItem('activePage', 'election')
+            },
+           setActivePage(page) {
+            localStorage.setItem('activePage', page)
+          },
+             logout(){
+      localStorage.clear()
+      window.location.reload()
+    },
+    getLoginUser() {
+      if(!localStorage.getItem('isLoggedIn')) {
+        this.isLoggedIn = false
+      }
+    },
+    login() {
+      const self = this
+      self.isLoading = true
+      self.error = null
+
+      window.confirmationResult.confirm(this.code).then(result => {
+        localStorage.setItem('isLoggedIn', true)
+        const number = localStorage.getItem('phone_number')
+        localStorage.setItem('loginUser',number)
+        window.location.reload()
+      }).catch( error => {
+        self.error = "Code Expires try again latter"
+        
+      })
+
+    },
+    verifyCode() {
+      const self = this
+      self.isLoading = true
+      self.error = null
+
+      var appVerifier = window.recaptchaVerifier;
+      firebase.auth().signInWithPhoneNumber(`+233${this.phone_number}`, appVerifier)
+          .then(function (confirmationResult) {
+            window.confirmationResult = confirmationResult;
+            self.showNumberInput = false;
+            self.isLoading = false;
+            self.showCodeInput = true
+            localStorage.setItem('phone_number',self.phone_number)
+          }).catch(function (error) {
+            console.log(error)
+            self.isLoading = false
+            self.error = 'SMS not sent, try again'
+            // ...
+          });
+    }
+    
+    },
+    updated() {
+        this.activePage = localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'results'
+    },
     created(){
+        this.activePage = localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'results'
+
         this.users = JSON.parse(localStorage.getItem('presidents')).sort(function(a, b){return b.votes - a.votes})
         this.vice_presidents = JSON.parse(localStorage.getItem('vice_presidents')).sort(function(a, b){return b.votes - a.votes}) ;
         this.general_secretaries = JSON.parse(localStorage.getItem('general_secretaries')).sort(function(a, b){return b.votes - a.votes}) ;
@@ -157,8 +286,11 @@ export default {
         this.vice_presidential_voters = localStorage.getItem('vice_president_voters') ? localStorage.getItem('vice_president_voters') : []
         this.general_secretaries_voters = localStorage.getItem('general_secretaries_voters') ? localStorage.getItem('general_secretaries_voters') : []
         this.financial_secretaries_voters = localStorage.getItem('financial_secretary_voters') ? localStorage.getItem('financial_secretary_voters') : []
-        
-
+    },
+    mounted() {
+           // Start Firebase invisible reCAPTCHA verifier
+      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('get-sign-in-code')
+      recaptchaVerifier.render()
     }
 }
 </script>
