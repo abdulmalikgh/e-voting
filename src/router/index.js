@@ -25,7 +25,7 @@ const routes = [
       },
       {
         path:'/vote/general_secretary',
-        name:'General_secretary',
+        name:'general_secretary',
         title:'e_vote | general_secretary',
         component: () => import(/* webpackChunkName: "about" */ '../components/GeneralSecretary.vue')
       },

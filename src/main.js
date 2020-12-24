@@ -11,7 +11,9 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import axios from 'axios'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import Toasted from 'vue-toasted'
 
+Vue.use(Toasted)
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 var firebaseConfig = {

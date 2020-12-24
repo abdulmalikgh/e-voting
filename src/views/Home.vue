@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="page-wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -29,31 +29,33 @@
     </nav>
     <!-- Hero -->
     <div class="hero-container container-fluid">
-         <div class="row top-nav-wrapper">
-            <div class="col-lg-10 col-sm-12 col-md-10">
+         <div class=" top-nav-wrapper">
             <ul class="top-navigation">
               <li>
-                <a href=""> Election</a>
+                <a @click="setActivePage('election')" :class="[activePage == 'election' ? 'link-border' : '']" href=""> Election</a>
               </li>
               <li>
-                <a href="">Results</a>
+                <a @click="setActivePage('results')" :class="[activePage == 'results' ? 'link-border' : '']" href="">Results</a>
               </li>
             </ul>
-        </div>
+        
          </div>
     </div>
     <!-- side navigation -->
-    <div class="container-fluid">
+    <div class="content-wrapper">
         <div class="main-container">
-          <div class="side-navigation">
+          <div class="side-navigation display">
              <ul>
-               <li><a class=" btn btn-secondary py-2" href="/vote/presidential">Presidential</a></li>
-               <li><a class=" btn btn-secondary py-2" href="/vote/vice_president">Vice President</a></li>
-               <li><a class=" btn btn-secondary py-2" href="/vote/general_secretary">General Secretary</a></li>
-               <li><a class=" btn btn-secondary py-2" href="/vote/financial_secretary">Financial Secretary</a></li>
+               <li><a  @click="setCurrentPage('presidential')" :class="[currentPage == 'presidential' ? 'green' : '']" class=" btn btn-secondary py-2 " href="/vote/presidential">Presidential</a></li>
+               <li><a  @click="setCurrentPage('vice_president')" :class="[currentPage == 'vice_president' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/vice_president">Vice President</a></li>
+               <li><a  @click="setCurrentPage('general_secretary')" :class="[currentPage == 'general_secretary' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/general_secretary">General Secretary</a></li>
+               <li><a  @click="setCurrentPage('financial_secretary')" :class="[currentPage == 'financial_secretary' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/financial_secretary">Financial Secretary</a></li>
              </ul>
           </div>
           <div class="vote-content">
+             <button @click="toggler" class="btn btn-primary toggler" >
+               <i class="fas fa-bars"></i>
+             </button>
               <router-view />
           </div>
         </div>
@@ -104,7 +106,7 @@
                  <div v-if="error">
                         <p class="alert-danger py-3 pl-3">{{error}}</p>
                       </div>
-              </div>
+              </div>  
 
                <div class="modal-footer">
                       <button type="submit" class="btn btn-primary"> <span v-if="isLoading" class="spinner-border spinner-border-sm"></span> Sign In</button>
@@ -121,7 +123,7 @@
 
 <script>
 import firebase from 'firebase/app'
-
+import $ from 'jquery'
 
 export default {
   name: 'Home',
@@ -132,6 +134,7 @@ export default {
       isLoading:false,
       showNumberInput:true,
       showCodeInput:false,
+      // currentPage:true,
       isLoggedIn: localStorage.getItem('isLoggedIn'),
       code:'',
       error:'',
@@ -164,7 +167,24 @@ export default {
       ]
     }
   },
+  computed:{
+    activePage() {
+      return localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'election'
+    },
+   currentPage(){
+      return localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+    }
+  },
   methods: {
+    toggler(){
+        $('.side-navigation').toggleClass('display')      
+    },
+    setActivePage(page) {
+      localStorage.setItem('activePage', page)
+    },
+    setCurrentPage(page) {
+      localStorage.setItem('currentPage', page)
+    },
     logout(){
       localStorage.clear()
       window.location.reload()
@@ -181,6 +201,8 @@ export default {
 
       window.confirmationResult.confirm(this.code).then(result => {
         localStorage.setItem('isLoggedIn', true)
+        const number = localStorage.getItem('phone_number')
+        localStorage.setItem('loginUser',number)
         window.location.reload()
       }).catch( error => {
         self.error = "Code Expires try again latter"
@@ -200,8 +222,9 @@ export default {
             self.showNumberInput = false;
             self.isLoading = false;
             self.showCodeInput = true
+            localStorage.setItem('phone_number',self.phone_number)
           }).catch(function (error) {
-            console.log()
+            console.log(error)
             self.isLoading = false
             self.error = 'SMS not sent, try again'
             // ...
@@ -221,6 +244,16 @@ export default {
 </script>
 
 <style scoped>
+.toggler{
+  visibility: hidden;
+}
+.link-border {
+  border:1px solid #4DABF7 !important;
+  background-color: #fff !important;
+}
+  .green{
+    background-color:#4DABF7 !important;
+  }
   .top-navbar, .navbar{
     background-color: rgb(253, 250, 250) !important;
     padding:10px 0;
@@ -259,30 +292,33 @@ export default {
     background-size: cover;
     display: flex;
   }
-  .top-navigation{
+ .top-nav-wrapper{
+    margin:260px auto 0 auto; 
+    width:80%;
+  }
+   .top-nav-wrapper ul{
       list-style: none;
   }
-  .top-navigation li {
-    display: inline-block;
+  .top-nav-wrapper ul li {
+    display: inline;
   }
-  .top-navigation ul li {
-    width: 200px !important;
-  }
-  .top-navigation ul li a{
+  .top-nav-wrapper ul li a{
+    width:200px;
     text-decoration: none;
     background-color: #eee;
-    padding:20px 30px;
+    padding:20px 70px;
     text-align: center;
-    color:#000
+    color:#000;
+    border:1px solid #eee;;
   }
-  .top-nav-wrapper{
-    position:absolute;
-  }
+
   /* Main container */
   .main-container{
     margin: 50px auto;
-    width:80%;
+    /* border:1px solid red; */
+    width:85%;
     display: flex;
+    justify-content: center;
   }
   .vote-content{
     width:70%
@@ -299,24 +335,60 @@ export default {
     margin:10px 0;
     background-color: rgb(129, 123, 123);
   }
+  /* .display {
+    position:absolute;
+    left: 0;
+    transition: all .8ms ease-in-out;
+    background-color:#4DABF7 !important;
+    z-index: 100;
+  } */
   /* .side-navigation ul li a{
     color:#fff;
     text-decoration: none;
   } */
-  .otp-input {
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-    margin: 0 10px;
-    font-size: 20px;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    text-align: center;
-  }
 /* MEDIA QUERIES */
+@media screen and (max-width:1100px) {
+  .main-container{
+    width:95%;
+  }
+   .top-nav-wrapper{
+    width:95%;
+  } 
+}
+@media screen and (max-width:700px) {
+  .main-container{
+    width:100%;
+  }
+  .top-nav-wrapper{
+    width:100% !important;
+  }
+}
 @media screen and (max-width:992px){
   .login{
     margin-right: 10px;
   }
+}
+@media screen and (max-width:400px) {
+ .top-nav-wrapper{
+    margin:265px 0 0 0 ;
+    width:100% !important;
+  } 
+  .top-nav-wrapper ul li a{
+     padding:15px 30px;
+  }
+}
+@media screen and (max-width:676px) {
+  .main-container {
+  
+  }
+ .side-navigation{
+  
+ }
+ .toggler{
+   visibility: visible;
+ }
+ .vote-content{
+   width: 80%!important;
+ }
 }
 </style>

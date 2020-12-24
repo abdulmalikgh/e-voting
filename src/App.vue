@@ -5,9 +5,9 @@
 </template>
 
 <style>
-html, body{
+/* html, body,div{
   width:100%;
   margin:0;
   padding:0;
-}
+} */
 </style>
