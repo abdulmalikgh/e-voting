@@ -22,6 +22,15 @@
                 </div>
             </div>
        </div>
+        <div class="row justify-content-center" v-if="success">
+         <div class="col-sm-8 col-xs-10 col-lg-5">
+           <div class="alert alert-success py-4 my-3">
+             <p class="text-center">
+               submission sent successfully
+             </p>
+           </div>
+         </div>
+       </div>
        <div class="row justify-content-center" v-if="showCandidate" id="selected">
            <div class="col-sm-8 col-xs-10 col-lg-5">
                <div class="card">
@@ -62,6 +71,7 @@ export default {
               showCandidate:false,
               isLoading: false,
               key:null,
+              success:false,
         users: [
         {
           name:'Adjoa Frimpong',
@@ -107,12 +117,45 @@ export default {
             const presidents = JSON.parse(localStorage.getItem('presidents'))
             
             // keeping track of voters
+            if(!user) {
+                 this.isLoading = false
+                alert('Please create account or login before you can vote')
+                return
+            }
 
             if(!localStorage.getItem('voters')) {
                 localStorage.setItem('voters',JSON.stringify([user]))
+                // ADDING NEW DATA TO DATABASE
+                for(let i = 0; i <= presidents.length; i++) {
+                    if(i === this.key) {
+                        presidents[i].votes += 1
+                    }
+                }
+
+                localStorage.setItem('presidents',JSON.stringify(presidents))
+
+                setTimeout(function(){
+                    self.isLoading = false
+                    self.showCandidate = false
+                    self.success = true
+                    
+                    setTimeout(function() {
+                        localStorage.setItem('currentPage','vice_president')
+                        self.$router.replace('/vote/vice_president')
+                    },3000)
+
+                },1000)
             } else {
                 const oldVoters = JSON.parse(localStorage.getItem('voters'))
                 const newArray = [user]
+
+                if(oldVoters && oldVoters.length === 1) {
+                    if(oldVoters[0] == user) {
+                        alert(`You can't vote more than one`)
+                        self.isLoading = false;
+                        return
+                    }
+                }
                 if(!oldVoters.find(number => number == user)) {
                     alert(`You can't vote more than one`)
                     return
@@ -126,14 +169,22 @@ export default {
                         presidents[i].votes += 1
                     }
                 }
+
                 localStorage.setItem('presidents',JSON.stringify(presidents))
-                setTimeout(function(){
-                    self.isLoading = false;
-                     self.toast({
-                        message:'Vote submitted successfully.',
-                        type:'success'
-                    })
-                },5000)
+
+                  setTimeout(function(){
+                    self.isLoading = false
+                    self.showCandidate = false
+                    self.success = true
+                    
+                    setTimeout(function() {
+                        localStorage.setItem('currentPage','vice_president')
+                        self.$router.replace('/vote/vice_president')
+                    },3000)
+
+                },1000)
+
+                 
                
 
             }
@@ -145,29 +196,10 @@ export default {
             this.seectedCandidtae = user
             this.key = key
             this.showCandidate = true
-
-        //        var sizeTheOverlays = function() {
-        //     $(".overlay").resize().each(function() {
-        //     var h = $(this).parent().outerHeight();
-        //     var w = $(this).parent().outerWidth();
-        //     $(this).css("height", h);
-        //     $(this).css("width", w);
-        //         });
-        //         };
-
-        // sizeTheOverlays();
-
-
-        // var width = $(window).width();
-        // $(window).resize(function(){
-        // if($(this).width() != width){
-        //     width = $(this).width();
-        //     sizeTheOverlays();
-        // }
-        // });
          }
     },
     mounted() {
+        window.scrollTo(0, 0);
         $(".top-card").hover(
             function () {
                 $(this).children(".setOverlay").addClass('overlay');

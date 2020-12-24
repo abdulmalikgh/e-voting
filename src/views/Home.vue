@@ -44,7 +44,8 @@
     <!-- side navigation -->
     <div class="content-wrapper">
         <div class="main-container">
-          <div class="side-navigation display">
+          <div class="side-navigation">
+             <button @click="toggler" class="float-right my-2 mr-2 toggler">X</button>
              <ul>
                <li><a  @click="setCurrentPage('presidential')" :class="[currentPage == 'presidential' ? 'green' : '']" class=" btn btn-secondary py-2 " href="/vote/presidential">Presidential</a></li>
                <li><a  @click="setCurrentPage('vice_president')" :class="[currentPage == 'vice_president' ? 'green' : '']" class=" btn btn-secondary py-2" href="/vote/vice_president">Vice President</a></li>
@@ -134,7 +135,7 @@ export default {
       isLoading:false,
       showNumberInput:true,
       showCodeInput:false,
-      // currentPage:true,
+      currentPage: null,
       isLoggedIn: localStorage.getItem('isLoggedIn'),
       code:'',
       error:'',
@@ -171,9 +172,9 @@ export default {
     activePage() {
       return localStorage.getItem('activePage') ? localStorage.getItem('activePage') : 'election'
     },
-   currentPage(){
-      return localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
-    }
+  //  currentPage(){
+  //     return localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+  //   }
   },
   methods: {
     toggler(){
@@ -184,6 +185,7 @@ export default {
     },
     setCurrentPage(page) {
       localStorage.setItem('currentPage', page)
+      this.currentPage = localStorage.getItem('currentPage')
     },
     logout(){
       localStorage.clear()
@@ -232,8 +234,12 @@ export default {
     }
     
   },
-
+  updated() {
+this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+  },
   mounted() {
+    this.currentPage = localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 'presidential'
+    window.scrollTo(0, 0);
      const self = this;
       // Start Firebase invisible reCAPTCHA verifier
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('get-sign-in-code')
@@ -335,14 +341,16 @@ export default {
     margin:10px 0;
     background-color: rgb(129, 123, 123);
   }
-  /* .display {
+  .display {
     position:absolute;
     left: 0;
     transition: all .8ms ease-in-out;
     background-color:#4DABF7 !important;
     z-index: 100;
-  } */
-  /* .side-navigation ul li a{
+    width:80%;
+    visibility: hidden;;
+  } 
+  /* /* .side-navigation ul li a{
     color:#fff;
     text-decoration: none;
   } */
@@ -378,12 +386,9 @@ export default {
   }
 }
 @media screen and (max-width:676px) {
-  .main-container {
-  
-  }
- .side-navigation{
-  
- }
+ /* .side-navigation, .side-navigation ul{
+ display: none;
+ } */
  .toggler{
    visibility: visible;
  }
